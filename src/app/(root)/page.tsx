@@ -1,9 +1,8 @@
-
-
-export default function Home() {
+import 'tailwindcss/tailwind.css';
+export default function home(){
   return (
-   
-       
-          <h1>threads</h1>
-  );
+  <h1>
+    home
+
+  </h1>)
 }
