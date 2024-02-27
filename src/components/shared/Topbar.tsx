@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "../../assets/logo.svg";
 import logout from "../../assets/logout.svg";
+import {dark} from "@clerk/themes";
 import { OrganizationSwitcher, SignOutButton, SignedIn } from "@clerk/nextjs";
 const Topbar = () => {
     return ( 
@@ -25,6 +26,7 @@ const Topbar = () => {
                 <OrganizationSwitcher
                 appearance={
                     {
+                        baseTheme:dark,
                         elements:{
                             organizationSwitcherTrigger:"px-4 py-2"
                         }
