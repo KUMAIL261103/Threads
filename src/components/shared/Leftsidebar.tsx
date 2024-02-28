@@ -34,8 +34,8 @@ const Leftsidebar = () => {
                             </div>
                             
                         </SignOutButton>
-                    </SignedIn>
                     <p className="text-light-2 max-lg:hidden">Logout</p>
+                    </SignedIn>
                 </div> 
 
             </div>

@@ -8,6 +8,7 @@ import profileimg from "../../assets/profile.svg";
 import { Button } from "../ui/button";
 import { isBase64Image } from "@/lib/utils";
  import {useUploadThing } from "@/lib/uploadThing";
+ import { usePathname,useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -22,6 +23,7 @@ import { Input } from "@/components/ui/input"
 import {zodResolver } from "@hookform/resolvers/zod";
 import { userValidation } from "@/lib/validations/user";
 import { ChangeEvent,useState} from "react";
+import { updateuser } from "@/lib/actions/user.actions";
 interface Props{
     user:{
         username:string,
@@ -37,6 +39,8 @@ interface Props{
 }
 const AccountProfile = ({user , btn_title}:Props) => {
     const [files,setfiles] = useState<File[]>();
+    const router = useRouter();
+    const path = usePathname();
     const {startUpload} = useUploadThing("media");
     const form = useForm({
         resolver:zodResolver(userValidation),
@@ -76,9 +80,28 @@ const AccountProfile = ({user , btn_title}:Props) => {
             values.profile_photo = imgg[0].url;
         }
     }
+    await updateuser({
+      userId:user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      profile_photo:values.profile_photo,
+      path:path,
+    });
+    if(path==='/profile/edit'){
+      router.back();
+    }else{
+      router.push('/');
+    }
+
+
+
+
+
    
   }
-    return ( <Form {...form}>
+    return ( 
+    <Form {...form}>
       <form 
       onSubmit={form.handleSubmit(onSubmit)} 
       className="space-y-8 flex flex-col gap-7">
@@ -116,7 +139,7 @@ const AccountProfile = ({user , btn_title}:Props) => {
                 className="account-form_image-input max-sm:text-center max-sm:text-small-regular max-sm:px-0 max-sm:file:w-[50%] "
                 onChange={(e)=>handleImage(e,field.onChange)} />
               </FormControl>
-              
+              <FormMessage/>
             </FormItem>
           )}
         />
@@ -135,7 +158,7 @@ const AccountProfile = ({user , btn_title}:Props) => {
                 {...field}
                 />
               </FormControl>
-              
+              <FormMessage/>
             </FormItem>
           )}
         />
@@ -154,7 +177,7 @@ const AccountProfile = ({user , btn_title}:Props) => {
                 {...field}
                 />
               </FormControl>
-              
+              <FormMessage/>
             </FormItem>
           )}
         />
@@ -173,7 +196,7 @@ const AccountProfile = ({user , btn_title}:Props) => {
                 {...field}
                 />
               </FormControl>
-              
+              <FormMessage/>
             </FormItem>
           )}
         />
