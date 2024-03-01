@@ -36,3 +36,33 @@ export const createThread = async({text,author,communityId
     }
     
 }
+export const fetchThreads = async(pageNO= 1, pageSize=20)=>{
+    connecttoToDB();
+    try{
+        const skipthreads = (pageNO-1)*pageSize;
+    const threads = await Thread.find({parentId:{$in:[ null || undefined]}})
+    .sort({createdAt:'desc'})
+    .skip(skipthreads)
+    .limit(pageSize)
+    .populate({path:'author', model:User})
+    .populate(
+    {   path:'children',
+        populate:{
+            path:'author',
+            model:User,
+            select: '_id id name username parentId image createdAt'
+        }
+    }).exec()
+    const totalthreads  = await Thread.countDocuments({parentId:{$in:[ null || undefined]}});
+    // const threadsresult = await threads.exec();
+    const isNextPage = totalthreads > skipthreads+threads.length;
+    if(threads==null ){
+        console.log("no threads are there");
+        return {};
+    }
+    return {threads,isNextPage};
+}catch(error:any){
+    console.log("the error occureed in fetching all threads");
+    throw new Error(error);
+}
+}
