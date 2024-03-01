@@ -4,6 +4,7 @@ import User from "../models/user.modal";
 import { connecttoToDB } from "../mongoose"
 // import mongoose from "mongoose";
 import Thread from "../models/thread.model";
+import mongoose from "mongoose";
 interface Props{
     text:string,
     author:string,
@@ -65,4 +66,69 @@ export const fetchThreads = async(pageNO= 1, pageSize=20)=>{
     console.log("the error occureed in fetching all threads");
     throw new Error(error);
 }
+}
+export const fetchThreadById = async({id}:{id:string})=>{
+    connecttoToDB();
+    try{
+     const thread = await Thread.findById(id).populate({path:'author',model:User,select:'image username id _id'})
+     .populate(
+        {
+            path:'children',
+            model:Thread,
+            populate:[
+               {
+                path:'author',
+                model:User,
+                select:'id _id username image',
+               },
+               {
+                path:'children',
+                model:Thread,
+                populate:{
+                    path:'author',
+                    model:User,
+                    select:'id _id username image',
+                }
+               }
+
+            ]
+
+
+    }).exec();
+     return thread;
+
+    }catch(err:any){
+        console.log("this is error of fetching thread by id");
+        throw new Error(err);
+
+    }
+}
+export const addComment = async(threadId:string, comment:string,userId:string,path:string)=>{
+    connecttoToDB();
+    try{
+      
+        
+        
+        const mainthreasd = await Thread.findById(new mongoose.Types.ObjectId(threadId));
+        
+        if(!mainthreasd){
+            throw new Error("The thread not found");
+        }
+        // console.log(userId);
+        // console.log(typeof(userId));
+        //const newuserId = new mongoose.Types.ObjectId(userId);
+        const userinfo = await User.findOne({id:userId});
+        const newcomment = new Thread({
+            text:comment,
+            author:userinfo._id,
+            parentId:new mongoose.Types.ObjectId(threadId),
+        })
+        const savecomment = await newcomment.save();
+        //console.log(savecomment);
+        mainthreasd.children.push(savecomment._id);
+        await mainthreasd.save();
+        revalidatePath(path);
+    }catch(error:any){
+        throw new Error(`this is the issue in creating the comment - ${error}`);
+    }
 }

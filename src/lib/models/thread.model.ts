@@ -15,7 +15,9 @@ const threadSchema = new mongoose.Schema({
         default:Date.now,
     },
     parentId:{
-        type:String,
+        //type:String,
+        type:mongoose.Schema.ObjectId,
+        refer:'Thread',
         
     },
     children:[

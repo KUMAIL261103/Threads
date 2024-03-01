@@ -2,7 +2,8 @@ import "tailwindcss/tailwind.css";
 import { fetchThreads } from "@/lib/actions/threads";
 import ThreadComponent from "@/components/cards/ThreadComponent";
 import { currentUser } from "@clerk/nextjs";
-import { Tourney } from "next/font/google";
+// import { Tourney } from "next/font/google";
+// import Comment from "@/components/forms/Comment";
 export default async function home() {
   let threads = await fetchThreads(1, 30);
   // console.log(threads);
