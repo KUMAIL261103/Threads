@@ -29,6 +29,7 @@ export default async function home() {
             comments={thread.children}
             totalLikes={thread.totalLikes}
             isComment={thread.children.length === 0 ? false : true}
+            color={"bg-dark-2"}
           />
         ))}
       </div>

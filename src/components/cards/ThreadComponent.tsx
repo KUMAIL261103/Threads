@@ -30,7 +30,7 @@ interface Props {
   isComment: Boolean;
   // isLiked: Boolean;
   totalLikes: number;
-  // color: string;
+  color: string;
   // data:{
   //     text:string,
   //     author:{
@@ -60,14 +60,14 @@ const ThreadComponent = ({
   comments,
   isComment,
   totalLikes,
-  // color,
+  color,
   // isLiked,
 }: Props) => {
   //console.log(author);
   //console.log(isComment, "this iss...");
   return (
     <article
-      className={`flex flex-col  rounded-xl w-full p-7 ${parentId === undefined ? "bg-dark-2" : "bg-dark-1"}  max-md:p-4  `}
+      className={`flex flex-col  rounded-xl w-full p-7  max-md:p-4  ` + color}
     >
       {/* <p>{current_userid}</p>
        <p> {postid}</p>

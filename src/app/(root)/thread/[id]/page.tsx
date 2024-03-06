@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           community={thread.author.community}
           createdAt={thread.createdAt}
           comments={thread.children}
-          // color="bg-dark-4"
+          color="bg-dark-2"
           totalLikes={thread.totalLikes}
           isComment={thread.children.length === 0 ? false : true}
         />
@@ -51,7 +51,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             postid={comment._id}
             content={comment.text}
             author={comment.author}
-            // color="#000000"
+            color="bg-dark-1"
             community={comment.author.community}
             createdAt={comment.createdAt}
             comments={comment.children}

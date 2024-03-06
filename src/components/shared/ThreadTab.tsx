@@ -106,7 +106,7 @@ async function ThreadsTab({
             postid={thread._id}
             current_userid={currentUserId}
             parentId={thread.parentId}
-            // color={"bg-dark-2"}
+            color={"bg-dark-2"}
             content={thread.text}
             author={
               accountType === "User"
@@ -144,7 +144,7 @@ async function ThreadsTab({
             postid={thread._id}
             current_userid={currentUserId}
             parentId={thread.parentId}
-            // color={"bg-dark-2"}
+            color={"bg-dark-2"}
             content={thread.text}
             author={
               accountType === "User"
