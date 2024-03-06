@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import User from "../models/user.modal";
 import { connecttoToDB } from "../mongoose"
-//import mongoose from "mongoose";
+import mongoose from "mongoose";
 export  async function updateuser (
     {
         userId,
@@ -66,5 +66,28 @@ export async function fetchuser(id:string){
     }catch(error:any){
         console.log("error in fertching the user");
         throw new Error(`Failed to fetch a user : ${error.message}`)
+    }
+}
+export async function fetchUserPosts(accountId: typeof mongoose.Schema.ObjectId){
+    try{
+        //console.log(accountId);
+        const threads = await User.findById(accountId)
+        .populate(
+            {   path:"threads",
+                model:"Thread",
+                populate:
+                {   path:"children",
+                    model:"Thread",
+                    populate:
+                    {   path:"author",
+                        model:"User",
+                        select:"image username name id"}}}).exec();
+        console.log(threads);
+        return threads;
+        // const threads = await User.findById(accountId).populate('threads');
+        // return threads;
+    }catch(err:any){
+            console.log("actionss error");
+             throw new Error(err);
     }
 }

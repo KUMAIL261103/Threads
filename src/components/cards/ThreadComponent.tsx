@@ -4,7 +4,7 @@ import reply from "../../assets/reply.svg";
 import repost from "../../assets/repost.svg";
 import Link from "next/link";
 interface Props {
-  key: number | string;
+  // key: number | string;
   parentId: string | null;
   current_userid: string | null;
   postid: string;
@@ -46,7 +46,7 @@ interface Props {
   // }
 }
 const ThreadComponent = ({
-  key,
+  // key,
   current_userid,
   postid,
   content,
@@ -57,7 +57,7 @@ const ThreadComponent = ({
   comments,
   isComment,
 }: Props) => {
-  console.log(author);
+  //console.log(author);
   //console.log(isComment, "this iss...");
   return (
     <article className="flex flex-col bg-dark-2 rounded-xl w-full p-7  max-md:p-4 ">
