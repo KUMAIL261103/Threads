@@ -28,6 +28,9 @@ interface Props {
     image: string;
   } | null;
   isComment: Boolean;
+  // isLiked: Boolean;
+  totalLikes: number;
+  // color: string;
   // data:{
   //     text:string,
   //     author:{
@@ -56,11 +59,16 @@ const ThreadComponent = ({
   createdAt,
   comments,
   isComment,
+  totalLikes,
+  // color,
+  // isLiked,
 }: Props) => {
   //console.log(author);
   //console.log(isComment, "this iss...");
   return (
-    <article className="flex flex-col bg-dark-2 rounded-xl w-full p-7  max-md:p-4 ">
+    <article
+      className={`flex flex-col  rounded-xl w-full p-7 ${parentId === undefined ? "bg-dark-2" : "bg-dark-1"}  max-md:p-4  `}
+    >
       {/* <p>{current_userid}</p>
        <p> {postid}</p>
         <p>{content}</p>
@@ -91,16 +99,23 @@ const ThreadComponent = ({
               className="cursor-pointer object-contain"
             />
           </Link>
-          <Image
-            src={heart}
-            alt="like"
-            className="cursor-pointer object-contain"
-          />
-          <Image
-            src={repost}
-            alt="repost"
-            className="cursor-pointer object-contain"
-          />
+          <button title="Like">
+            {totalLikes > 0 && (
+              <p className="text-subtle-medium text-gray-1">{totalLikes}</p>
+            )}
+            <Image
+              src={heart}
+              alt="like"
+              className="cursor-pointer object-contain"
+            />
+          </button>
+          <button title="Repost">
+            <Image
+              src={repost}
+              alt="repost"
+              className="cursor-pointer object-contain"
+            />
+          </button>
         </div>
         <div
           className={`w-0.5 grow rounded-full bg-neutral-800 h-full ml-6 bottom-12 z-10 max-sm:bottom-5 ${comments?.length == 0 ? "hidden" : "relative"}`}

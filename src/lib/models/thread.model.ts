@@ -24,7 +24,15 @@ const threadSchema = new mongoose.Schema({
         {
         type:mongoose.Schema.ObjectId,
         ref:'Thread'}
-    ]
+    ],
+    likeduser:[
+        {
+        type:mongoose.Schema.ObjectId,
+        ref:'User'
+    }
+    ],
+
+   
 
 });
 

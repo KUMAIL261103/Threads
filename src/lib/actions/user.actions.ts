@@ -82,12 +82,71 @@ export async function fetchUserPosts(accountId: typeof mongoose.Schema.ObjectId)
                     {   path:"author",
                         model:"User",
                         select:"image username name id"}}}).exec();
-        console.log(threads);
+       // console.log(threads);
+        //return threads;
+       // const threads = await User.findById(accountId).populate({path:'threads',model:'Thread'});
         return threads;
+    }catch(err:any){
+            console.log("actionss error");
+             throw new Error(err);
+    }
+}
+export async function fetchUserPostsreplies(accountId: typeof mongoose.Schema.ObjectId){
+    try{
+        //console.log(accountId);
+        const info = await User.findById(accountId)
+        .populate(
+            {   path:"threads",
+                model:"Thread",
+                populate:
+                {   path:"children",
+                    model:"Thread",
+                    populate:
+                    {   path:"author",
+                        model:"User",
+                        select:"image username name id"}}}).exec();
+        //console.log("this is  my info ....",info);
+        if(info && info.threads){
+
+             info.threads = info.threads.filter((thread:any)=>thread.parentId!==undefined);          
+        }
+        //  const threads = await User.findById(accountId).populate('threads');
+        // return threads;
+        
+        //console.log("this is updated info ",info);
+        return info;
+        // return reqarr;
         // const threads = await User.findById(accountId).populate('threads');
         // return threads;
     }catch(err:any){
             console.log("actionss error");
-             throw new Error(err);
+             throw new Error(err.message);
+    }
+}
+export async function fetchUserPostsLiked(accountId: typeof mongoose.Schema.ObjectId){
+    try{
+        //console.log(accountId);
+        const info = await User.findById(accountId)
+        .populate(
+            {   path:"likedthread",
+                model:"Thread",
+                populate:
+                {   path:"children",
+                    model:"Thread",
+                    populate:
+                    {   path:"author",
+                        model:"User",
+                        select:"image username name id"}}}).exec();
+      console.log(info);
+      return info;
+    //  const threads = await User.findById(accountId).populate('threads');
+    //     return threads;
+        //console.log(threads);
+        //return threads;
+        // const threads = await User.findById(accountId).populate('threads');
+        // return threads;
+    }catch(err:any){
+            console.log("actionss error");
+             throw new Error(err.message);
     }
 }

@@ -30,6 +30,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
           community={thread.author.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          // color="bg-dark-4"
+          totalLikes={thread.totalLikes}
           isComment={thread.children.length === 0 ? false : true}
         />
       </div>
@@ -39,6 +41,24 @@ const Page = async ({ params }: { params: { id: string } }) => {
           currentUserId={user?.id}
           currentUserImage={user?.imageUrl}
         />
+      </div>
+      <div className="mt-5 text-light-2 flex flex-col gap-5 ">
+        {thread.children?.map((comment: any) => (
+          <ThreadComponent
+            key={comment._id}
+            parentId={comment.parentId}
+            current_userid={user?.id || ""}
+            postid={comment._id}
+            content={comment.text}
+            author={comment.author}
+            // color="#000000"
+            community={comment.author.community}
+            createdAt={comment.createdAt}
+            comments={comment.children}
+            totalLikes={comment.totalLikes}
+            isComment={comment.children.length === 0 ? false : true}
+          />
+        ))}
       </div>
     </section>
   );

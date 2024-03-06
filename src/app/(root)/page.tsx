@@ -15,7 +15,7 @@ export default async function home() {
     return <div>NO Threads are created</div>;
   } else {
     return (
-      <div className="flex flex-col gap-10 mt-10 text-light-2">
+      <div className="flex flex-col gap-10  text-light-2">
         {threadscontent?.map((thread, index) => (
           <ThreadComponent
             key={thread._id}
@@ -27,6 +27,7 @@ export default async function home() {
             community={thread.author.community}
             createdAt={thread.createdAt}
             comments={thread.children}
+            totalLikes={thread.totalLikes}
             isComment={thread.children.length === 0 ? false : true}
           />
         ))}

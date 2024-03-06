@@ -68,6 +68,7 @@ const Page = async (params: Params) => {
                 currentUserId={user.id}
                 accountId={userInfo._id}
                 accountType="User"
+                tabs={tab.value}
               />
             </TabsContent>
           ))}

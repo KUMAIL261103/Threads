@@ -46,7 +46,7 @@ export const sidebarLinks = [
 export const profileTabs = [
   { value: "threads", label: "Threads", icon: `${reply.src}` },
   { value: "replies", label: "Replies", icon:   `${members.src}` },
-  { value: "tagged", label: "Tagged", icon: `${tag.src}` },
+  { value: "Liked", label: "Liked", icon: `${activity.src}` },
 ];
 
 export const communityTabs = [
