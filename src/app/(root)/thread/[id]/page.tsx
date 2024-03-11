@@ -7,15 +7,18 @@ import Comment from "@/components/forms/Comment";
 // fetchThreadById;
 const Page = async ({ params }: { params: { id: string } }) => {
   //console.log(params);
-  const id = params;
-
+  const id = params.id;
+  // console.log(id);
   const user = await currentUser();
+  //console.log("hwrreee", user);
   if (!user) return null;
+  console.log(user);
   const userinfo = await fetchuser(user.id);
-  if (!userinfo.onboarded) {
+  console.log("herre iisssuserinfo", userinfo);
+  if (userinfo == undefined || !userinfo?.onboarded) {
     redirect("/onboarding");
   }
-  const thread = await fetchThreadById(id);
+  const thread = await fetchThreadById({ id });
 
   return (
     <section className="relative">
@@ -37,7 +40,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       </div>
       <div>
         <Comment
-          threadId={id.id}
+          threadId={id}
           currentUserId={user?.id}
           currentUserImage={user?.imageUrl}
         />

@@ -1,8 +1,10 @@
 "use server"
 import { revalidatePath } from "next/cache";
 import User from "../models/user.modal";
+import Thread from "../models/thread.model"
 import { connecttoToDB } from "../mongoose"
-import mongoose, { SortOrder } from "mongoose";
+import { ObjectId } from "mongodb";
+import mongoose, { FilterQuery, SortOrder } from "mongoose";
 export  async function updateuser (
     {
         userId,
@@ -159,7 +161,7 @@ export async function fetchAllUsers(
         sortby="desc"
 
     }:{
-        userId:string,
+        userId:any,
         searchString?:string,
         pageNumber?:number,
         pageSize?:number,
@@ -167,12 +169,49 @@ export async function fetchAllUsers(
     }
 ){
     try{
+        // connecttoToDB();
+        // const data = await User.find(
+        // {$ne : {id:userId}},
+        // ).select('_id id name username image bio');
+        // return data;
+        console.log("this is the user id",userId);
         connecttoToDB();
-        const data = await User.find().select('_id id name username image bio');
-        return data;
+        const skipUsers:number = (pageNumber-1)*pageSize;
+        const regex = new RegExp(searchString,'i');
+        const query:FilterQuery<typeof User> = {
+           _id: { $ne: new mongoose.Types.ObjectId(userId) }
 
+        }
+        if(searchString!=""){
+            query.$or = [
+                {name:regex},
+                {username:regex},
+            ]
+        }
+        //const sortedOpt = {createdAt:sortby}
+        //const reqUsers = (await User.find(query)).sort(sortedOpt).skip(skipUsers).limit(pageSize);
+        const reqUsers =  User.find(query).sort({ createdAt: sortby }).skip(skipUsers).limit(pageSize);
+        const totalUsers = await User.countDocuments(query);
+        const users = await reqUsers.exec();
+        const isNext = totalUsers > skipUsers + users.length;
+        return {users,isNext};
     }catch(err:any){
         console.log(err);
         throw  new Error(err.message);
+    }
+}
+export async function getActivity(userId:string){
+    try{
+        connecttoToDB();
+        const userthreads  = await Thread.find({author:userId});
+        const comments = userthreads.reduce((acc:any,thread:any)=>{
+            return acc.concat(thread.children);
+        },[]);
+        const repliesExceptUser = await Thread.find({_id:{$in:comments},author:{$ne:userId}}).populate({path:'author',model:'User',select:'image username name id _id'});
+        return repliesExceptUser;
+
+    
+    }catch(err:any){
+        throw new Error(err.message);
     }
 }

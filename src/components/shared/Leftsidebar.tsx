@@ -46,11 +46,11 @@ const Leftsidebar = () => {
                 router.push("/sign-in");
               }}
             >
-              <div className="flex cursor-pointer  ">
+              <div className="flex cursor-pointer  gap-4  rounded-lg ">
                 <Image src={logout} alt="logout" width={24} height={24} />
+                <p className="text-light-2 max-lg:hidden">Logout</p>
               </div>
             </SignOutButton>
-            <p className="text-light-2 max-lg:hidden">Logout</p>
           </SignedIn>
         </div>
       </div>
