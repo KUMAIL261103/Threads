@@ -19,7 +19,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <section className="relative">
-      <div className="flex flex-col gap-10  text-light-2">
+      <div className="flex flex-col gap-10  text-light-2 !bg-dark-2 rounded-lg">
         <ThreadComponent
           key={thread._id}
           parentId={thread.parentId}

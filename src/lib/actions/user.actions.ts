@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import User from "../models/user.modal";
 import { connecttoToDB } from "../mongoose"
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 export  async function updateuser (
     {
         userId,
@@ -137,7 +137,7 @@ export async function fetchUserPostsLiked(accountId: typeof mongoose.Schema.Obje
                     {   path:"author",
                         model:"User",
                         select:"image username name id"}}}).exec();
-      console.log(info);
+     // console.log(info);
       return info;
     //  const threads = await User.findById(accountId).populate('threads');
     //     return threads;
@@ -148,5 +148,31 @@ export async function fetchUserPostsLiked(accountId: typeof mongoose.Schema.Obje
     }catch(err:any){
             console.log("actionss error");
              throw new Error(err.message);
+    }
+}
+export async function fetchAllUsers(
+    {
+        userId,
+        searchString="",
+        pageNumber=1,
+        pageSize=10,
+        sortby="desc"
+
+    }:{
+        userId:string,
+        searchString?:string,
+        pageNumber?:number,
+        pageSize?:number,
+        sortby?:SortOrder
+    }
+){
+    try{
+        connecttoToDB();
+        const data = await User.find().select('_id id name username image bio');
+        return data;
+
+    }catch(err:any){
+        console.log(err);
+        throw  new Error(err.message);
     }
 }

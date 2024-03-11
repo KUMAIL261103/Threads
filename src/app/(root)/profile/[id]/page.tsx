@@ -46,7 +46,7 @@ const Page = async (params: Params) => {
                   alt={tab.label}
                   width={24}
                   height={24}
-                  className="object-contain"
+                  className="object-contain filter grayscale brightness-50"
                 />
                 <p className="max-sm:hidden">{tab.label}</p>
 
