@@ -174,7 +174,7 @@ export async function fetchAllUsers(
         // {$ne : {id:userId}},
         // ).select('_id id name username image bio');
         // return data;
-        console.log("this is the user id",userId);
+        //console.log("this is the user id",userId);
         connecttoToDB();
         const skipUsers:number = (pageNumber-1)*pageSize;
         const regex = new RegExp(searchString,'i');
@@ -189,7 +189,7 @@ export async function fetchAllUsers(
             ]
         }
         //const sortedOpt = {createdAt:sortby}
-        //const reqUsers = (await User.find(query)).sort(sortedOpt).skip(skipUsers).limit(pageSize);
+        //const reqUsers = (await User.find(qu  ery)).sort(sortedOpt).skip(skipUsers).limit(pageSize);
         const reqUsers =  User.find(query).sort({ createdAt: sortby }).skip(skipUsers).limit(pageSize);
         const totalUsers = await User.countDocuments(query);
         const users = await reqUsers.exec();

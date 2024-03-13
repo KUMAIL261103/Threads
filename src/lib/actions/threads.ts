@@ -108,7 +108,7 @@ export const addComment = async(threadId:string, comment:string,userId:string,pa
     try{
       
         
-        console.log(userId);
+       // console.log(userId);
         const mainthreasd = await Thread.findById(new mongoose.Types.ObjectId(threadId));
         
         if(!mainthreasd){
@@ -122,6 +122,7 @@ export const addComment = async(threadId:string, comment:string,userId:string,pa
             text:comment,
             author:userinfo._id,
             parentId:new mongoose.Types.ObjectId(threadId),
+            createdAt:Date.now(),
         })
         const savecomment = await newcomment.save();
         //console.log(savecomment);

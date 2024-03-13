@@ -10,7 +10,7 @@ type userInfotype = {
 };
 export default async function onboarding() {
   const user = await currentUser();
-  console.log(user);
+  //console.log(user);
   const userInfo: userInfotype = {};
   const userData = {
     id: user?.id || "",

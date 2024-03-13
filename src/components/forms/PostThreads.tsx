@@ -6,7 +6,7 @@ import * as z from "zod";
 import { Textarea } from "../ui/textarea";
 // import profileimg from "../../assets/profile.svg";
 import { Button } from "../ui/button";
-
+import { useOrganization } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Form,
@@ -38,7 +38,7 @@ import { createThread } from "@/lib/actions/threads";
 const PostThread = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const path = usePathname();
-
+  const { organization } = useOrganization();
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
@@ -53,7 +53,7 @@ const PostThread = ({ userId }: { userId: string }) => {
     await createThread({
       text: values.threads,
       author: userId,
-      communityId: null,
+      communityId: organization ? organization.id : null,
       path: path,
     });
     router.push("/");

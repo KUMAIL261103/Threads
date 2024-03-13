@@ -12,9 +12,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
   //console.log("hwrreee", user);
   if (!user) return null;
-  console.log(user);
+  //console.log(user);
   const userinfo = await fetchuser(user.id);
-  console.log("herre iisssuserinfo", userinfo);
+  //console.log("herre iisssuserinfo", userinfo);
   if (userinfo == undefined || !userinfo?.onboarded) {
     redirect("/onboarding");
   }
