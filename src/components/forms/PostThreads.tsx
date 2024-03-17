@@ -6,6 +6,7 @@ import * as z from "zod";
 import { Textarea } from "../ui/textarea";
 // import profileimg from "../../assets/profile.svg";
 import { Button } from "../ui/button";
+import { findorgid } from "@/lib/actions/community.actions";
 import { useOrganization } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -39,6 +40,21 @@ const PostThread = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const path = usePathname();
   const { organization } = useOrganization();
+  let communitydbId = "";
+  if (organization) {
+    new Promise((resolve, reject) => {
+      findorgid(organization.id)
+        .then((data: string) => {
+          //console.log(data);
+          communitydbId = data;
+          //console.log(communitydbId);
+          resolve(data);
+        })
+        .catch((error: any) => {
+          reject(error);
+        });
+    });
+  }
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
@@ -53,7 +69,7 @@ const PostThread = ({ userId }: { userId: string }) => {
     await createThread({
       text: values.threads,
       author: userId,
-      communityId: organization ? organization.id : null,
+      communityId: organization ? communitydbId : null,
       path: path,
     });
     router.push("/");

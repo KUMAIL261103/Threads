@@ -7,7 +7,16 @@ import Thread from "../models/thread.model";
 import User from "../models/user.modal";
 
 import { connecttoToDB } from "../mongoose";
-
+export async function findorgid(id:string){
+    connecttoToDB();
+    try{
+        const org = await Community.findOne({id:id});
+        console.log(org);
+        return org._id.toString();
+    }catch(error:any){
+        throw new Error(`Failed to find the community ${error.message}`);
+    }
+}
 export async function createCommunity(
   id: string,
   name: string,

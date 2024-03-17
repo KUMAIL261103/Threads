@@ -3,12 +3,13 @@ import { revalidatePath } from "next/cache";
 import User from "../models/user.modal";
 import { connecttoToDB } from "../mongoose"
 // import mongoose from "mongoose";
+import Community from "../models/community";
 import Thread from "../models/thread.model";
 import mongoose from "mongoose";
 interface Props{
     text:string,
     author:string,
-    communityId:string |null,
+    communityId:string | null,
     // threadId:string ,
     path:string
 }
@@ -17,17 +18,28 @@ export const createThread = async({text,author,communityId
     ,path}:Props)=>{
     // console.log(thread);
     // console.log(userId);
+    // console.log( "this is text "   ,text);
+    // console.log("this is author ", author);
+    // console.log("this is community id ", communityId);
+    // console.log("this is path", path);
     connecttoToDB();
     try{
         const createThread = await Thread.create({
         text,
         author,
-        community: communityId || null,
+        community: communityId!=null ?new mongoose.Types.ObjectId(communityId) : null,
     });
     const userr = await User.findByIdAndUpdate(author,
         {$push:{
             threads:createThread._id,
         }})
+    if(communityId){
+       const communityupdate  = await Community.findByIdAndUpdate(communityId,{
+        $push:{
+            threads:createThread._id,
+        }
+       })
+    }
     //console.log(userr);
     revalidatePath(path);
 
