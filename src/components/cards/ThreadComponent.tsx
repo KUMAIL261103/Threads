@@ -26,6 +26,7 @@ interface Props {
   community: {
     id: string;
     name: string;
+    username:string;
     image: string;
   } | null;
   isComment: Boolean;
@@ -64,7 +65,7 @@ const ThreadComponent = ({
   color,
   // isLiked,
 }: Props) => {
-  //console.log(author);
+  console.log("this is author info ",author);
   //console.log(isComment, "this iss...");
   return (
     // <Link href={`/thread/${postid}`}>
@@ -123,10 +124,10 @@ const ThreadComponent = ({
           <Link href={`/thread/${postid}`}>
             <p className="text-subtle-medium mt-1 text-gray-1">
               {comments?.length} replies
-            </p>
+            </p>  
           </Link>
         )}
-        {!isComment && community && <h1>{community.name}</h1>}
+        {!isComment && community!=null && <h1>{community.name}</h1>}
       </div>
     </article>
     // </Link>

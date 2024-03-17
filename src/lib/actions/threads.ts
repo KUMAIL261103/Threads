@@ -5,6 +5,7 @@ import { connecttoToDB } from "../mongoose"
 // import mongoose from "mongoose";
 import Community from "../models/community";
 import Thread from "../models/thread.model";
+
 import mongoose from "mongoose";
 interface Props{
     text:string,
@@ -53,19 +54,34 @@ export const fetchThreads = async(pageNO= 1, pageSize=20)=>{
     connecttoToDB();
     try{
         const skipthreads = (pageNO-1)*pageSize;
-    const threads = await Thread.find({parentId:{$in:[ null || undefined]}})
-    .sort({createdAt:'desc'})
+        const threads = await Thread.find({ parentId: { $in: [null, undefined] } })
+    .sort({ createdAt: 'desc' })
     .skip(skipthreads)
     .limit(pageSize)
-    .populate({path:'author', model:User})
-    .populate(
-    {   path:'children',
-        populate:{
-            path:'author',
-            model:User,
+    .populate({ path: 'author', model: User, select : " id _id name username image" })
+    .populate({path:'community',model:Community, select:"id name username image"})
+    .populate({
+        path: 'children',
+        populate: {
+            path: 'author',
+            model: User,
             select: '_id id name username parentId image createdAt'
         }
-    }).exec()
+    })
+    .exec();
+    // const threads = await Thread.find({parentId:{$in:[ null || undefined]}})
+    // .sort({createdAt:'desc'})
+    // .skip(skipthreads)
+    // .limit(pageSize)
+    // .populate({path:'author', model:User, populate:{path:'communities',model:Community, select:"id name image"}})
+    // .populate(
+    // {   path:'children',
+    //     populate:{
+    //         path:'author',
+    //         model:User,
+    //         select: '_id id name username parentId image createdAt'
+    //     }
+    // }).exec()
     const totalthreads  = await Thread.countDocuments({parentId:{$in:[ null || undefined]}});
     // const threadsresult = await threads.exec();
     const isNextPage = totalthreads > skipthreads+threads.length;

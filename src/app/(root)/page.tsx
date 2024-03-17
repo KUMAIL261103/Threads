@@ -14,21 +14,21 @@ export default async function home() {
   // console.log(threads);
   //console.log(user);
   let threadscontent = threads.threads;
-  //console.log(threadscontent);
+  console.log(threadscontent);
   if (threadscontent?.length === 0) {
-    return <div>NO Threads are created</div>;
+     return <div>NO Threads are created</div>;
   } else {
     return (
       <div className="flex flex-col gap-10  text-light-2">
         {threadscontent?.map((thread, index) => (
-          <ThreadComponent
+            <ThreadComponent
             key={thread._id}
             parentId={thread.parentId}
             current_userid={user?.id || ""}
             postid={thread._id}
             content={thread.text}
             author={thread.author}
-            community={thread.author.community}
+            community={thread.community}
             createdAt={thread.createdAt}
             comments={thread.children}
             totalLikes={thread.totalLikes}
