@@ -3,10 +3,16 @@ import { currentUser } from "@clerk/nextjs";
 import UserComponent from "../cards/UserComponent";
 
 const Rightsidebar = async () => {
-  const userinfo: any = await currentUser();
-  const userdbid = await fetchuser(userinfo.id);
-  const users = await fetchAllUsers({ userId: userdbid._id });
-  const userarray = users.users;
+  let userinfo: any = await currentUser();
+  let userarray: any = [];
+  if (!userinfo) {
+    const users = await fetchAllUsers({ userId: "" });
+    userarray = users.users;
+  } else {
+    const userdbid = await fetchuser(userinfo.id);
+    const users = await fetchAllUsers({ userId: userdbid._id });
+    userarray = users.users;
+  }
   return (
     <section className="custom-scrollbar rightsidebar ">
       <div className="flex flex-1 flex-col justify-start">

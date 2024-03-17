@@ -178,15 +178,27 @@ export async function fetchAllUsers(
         connecttoToDB();
         const skipUsers:number = (pageNumber-1)*pageSize;
         const regex = new RegExp(searchString,'i');
-        const query:FilterQuery<typeof User> = {
-           _id: { $ne: new mongoose.Types.ObjectId(userId) }
+        let query:FilterQuery<typeof User>;
+        if(userId!=""){
 
-        }
-        if(searchString!=""){
-            query.$or = [
-                {name:regex},
-                {username:regex},
-            ]
+            query = {
+               _id: { $ne: new mongoose.Types.ObjectId(userId) }
+    
+            }
+            if(searchString!=""){
+                query.$or = [
+                    {name:regex},
+                    {username:regex},
+                ]
+            }
+        }else{
+            query = {};
+            if(searchString!=""){
+                query.$or = [
+                    {name:regex},
+                    {username:regex},
+                ]
+            }
         }
         //const sortedOpt = {createdAt:sortby}
         //const reqUsers = (await User.find(qu  ery)).sort(sortedOpt).skip(skipUsers).limit(pageSize);
