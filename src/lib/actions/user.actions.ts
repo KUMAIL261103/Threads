@@ -156,6 +156,7 @@ export async function fetchAllUsers(
     {
         userId,
         searchString="",
+        suggestedusers,
         pageNumber=1,
         pageSize=10,
         sortby="desc"
@@ -165,7 +166,8 @@ export async function fetchAllUsers(
         searchString?:string,
         pageNumber?:number,
         pageSize?:number,
-        sortby?:SortOrder
+        sortby?:SortOrder,
+        suggestedusers?:boolean
     }
 ){
     try{
@@ -176,6 +178,13 @@ export async function fetchAllUsers(
         // return data;
         //console.log("this is the user id",userId);
         connecttoToDB();
+        
+        if(suggestedusers===true){
+            console.log("this is the suggested users",userId);
+            const users= await User.find({id:{$ne:userId}}).select('id name username image bio').limit(5);
+            const isNext = false;
+            return {isNext,users};
+        }
         const skipUsers:number = (pageNumber-1)*pageSize;
         const regex = new RegExp(searchString,'i');
         let query:FilterQuery<typeof User>;

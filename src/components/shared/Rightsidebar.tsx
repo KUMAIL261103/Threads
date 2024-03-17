@@ -4,15 +4,19 @@ import UserComponent from "../cards/UserComponent";
 
 const Rightsidebar = async () => {
   let userinfo: any = await currentUser();
+  // console.log("hwrreee", userinfo);
   let userarray: any = [];
-  if (!userinfo) {
-    const users = await fetchAllUsers({ userId: "" });
-    userarray = users.users;
-  } else {
-    const userdbid = await fetchuser(userinfo.id);
-    const users = await fetchAllUsers({ userId: userdbid._id });
-    userarray = users.users;
-  }
+
+  const users = await fetchAllUsers({
+    userId: userinfo.id,
+    suggestedusers: true,
+  });
+  userarray = users.users;
+
+  // const userdbid = await fetchuser(userinfo.id);
+  // const users = await fetchAllUsers({ userId: userdbid._id });
+  // userarray = users.users;
+
   return (
     <section className="custom-scrollbar rightsidebar ">
       <div className="flex flex-1 flex-col justify-start">

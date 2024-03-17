@@ -13,7 +13,9 @@ const Page = async () => {
   // const [searchTerm, setSearchTerm] = useState(""); // Add state to store the search term
   const user: any = await currentUser();
   //console.log("hwrreee", user);
+  //console.log("user not found", user);
   const userinfo = await fetchuser(user.id);
+  //console.log("user in db not found", userinfo);
   //console.log("herre iisssuserinfo", userinfo);
   const dbid = userinfo._id;
   const plainDbId = JSON.parse(JSON.stringify(dbid.toString()));
