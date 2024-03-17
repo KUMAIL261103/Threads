@@ -1,10 +1,15 @@
 import { fetchAllUsers, fetchuser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import UserComponent from "../cards/UserComponent";
+import { redirect } from "next/navigation";
 
 const Rightsidebar = async () => {
   let userinfo: any = await currentUser();
-  // console.log("hwrreee", userinfo);
+  if (!userinfo) {
+    redirect("/sign-in");
+  }
+  console.log("hwrreee", userinfo);
+
   let userarray: any = [];
 
   const users = await fetchAllUsers({

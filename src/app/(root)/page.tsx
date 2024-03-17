@@ -2,12 +2,16 @@ import "tailwindcss/tailwind.css";
 import { fetchThreads } from "@/lib/actions/threads";
 import ThreadComponent from "@/components/cards/ThreadComponent";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 // import { Tourney } from "next/font/google";
 // import Comment from "@/components/forms/Comment";
 export default async function home() {
+  const user = await currentUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
   let threads = await fetchThreads(1, 30);
   // console.log(threads);
-  const user = await currentUser();
   //console.log(user);
   let threadscontent = threads.threads;
   //console.log(threadscontent);

@@ -8,19 +8,21 @@ import { fetchAllUsers } from "@/lib/actions/user.actions";
 import { useState } from "react";
 import debounce from "lodash.debounce"; // Import the debounce function from lodash
 import Search from "@/components/forms/Search";
+// import { redirect } from 'next/navigation'
 const Page = async () => {
   //console.log(params);
   // const [searchTerm, setSearchTerm] = useState(""); // Add state to store the search term
   const user: any = await currentUser();
-  //console.log("hwrreee", user);
-  //console.log("user not found", user);
+  if (!user) return null;
+
   const userinfo = await fetchuser(user.id);
+  if (!userinfo?.onboarded) redirect("/onboarding");
   //console.log("user in db not found", userinfo);
   //console.log("herre iisssuserinfo", userinfo);
   const dbid = userinfo._id;
   const plainDbId = JSON.parse(JSON.stringify(dbid.toString()));
   //console.log("herre iisssuserinfo", plainDbId);
-  if (!user) return null;
+  
 
   return (
     <>
