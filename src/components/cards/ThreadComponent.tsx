@@ -90,7 +90,7 @@ const ThreadComponent = ({
         <div className="pl-20 relative bottom-2  text-body-normal max-sm:pl-5 max-sm:top-2">
           {content}
         </div>
-        <div className="flex gap-x-5 mt-2 pl-20 max-sm:mt-5">
+        <div className="flex gap-x-5 mt-2 pl-20 max-sm:mt-5 ">
           <Link href={`/thread/${postid}`}>
             <Image
               src={reply}
@@ -98,7 +98,7 @@ const ThreadComponent = ({
               className="cursor-pointer object-contain"
             />
           </Link>
-          {totalLikes > 0 && (
+          {/* {totalLikes > 0 && (
             <p className="text-subtle-medium text-gray-1">{totalLikes}</p>
           )}
           <button title="Like" type="button">
@@ -114,7 +114,7 @@ const ThreadComponent = ({
               alt="repost"
               className="cursor-pointer object-contain"
             />
-          </button>
+          </button> */}
         </div>
         <div
           className={`w-0.5 grow rounded-full bg-neutral-800 h-full ml-6 bottom-12 z-10 max-sm:bottom-5 ${comments?.length == 0 ? "hidden" : "relative"}`}
