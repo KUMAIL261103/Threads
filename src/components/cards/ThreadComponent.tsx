@@ -1,4 +1,4 @@
-// "use client";
+//"use client";
 import Image from "next/image";
 import heart from "../../assets/heart-gray.svg";
 import reply from "../../assets/reply.svg";
@@ -26,7 +26,7 @@ interface Props {
   community: {
     id: string;
     name: string;
-    username:string;
+    username: string;
     image: string;
   } | null;
   isComment: Boolean;
@@ -65,12 +65,19 @@ const ThreadComponent = ({
   color,
   // isLiked,
 }: Props) => {
-  console.log("this is author info ",author);
+  //console.log("this is author info ", author);
+  const formattedDate = createdAt.toISOString().split("T")[0];
+
+  // Format the time as "hh:mm:ss"
+  const formattedTime = createdAt.toISOString().split("T")[1].split(".")[0];
   //console.log(isComment, "this iss...");
   return (
     // <Link href={`/thread/${postid}`}>
     <article
-      className={`flex flex-col  rounded-xl w-full p-7  max-md:p-4  ` + color}
+      className={
+        `flex flex-col  rounded-xl w-full p-7 ${community == null ? "pb-0" : "pb-7"} max-md:p-4  ` +
+        color
+      }
     >
       <div className="h-full">
         <div className="flex items-center w-full gap-8">
@@ -101,7 +108,7 @@ const ThreadComponent = ({
           </Link>
           {/* {totalLikes > 0 && (
             <p className="text-subtle-medium text-gray-1">{totalLikes}</p>
-          )}
+          )} */}
           <button title="Like" type="button">
             <Image
               src={heart}
@@ -115,7 +122,7 @@ const ThreadComponent = ({
               alt="repost"
               className="cursor-pointer object-contain"
             />
-          </button> */}
+          </button>
         </div>
         <div
           className={`w-0.5 grow rounded-full bg-neutral-800 h-full ml-6 bottom-12 z-10 max-sm:bottom-5 ${comments?.length == 0 ? "hidden" : "relative"}`}
@@ -124,10 +131,24 @@ const ThreadComponent = ({
           <Link href={`/thread/${postid}`}>
             <p className="text-subtle-medium mt-1 text-gray-1">
               {comments?.length} replies
-            </p>  
+            </p>
           </Link>
         )}
-        {!isComment && community!=null && <h1>{community.name}</h1>}
+        <div>
+          <div
+            className={`text-subtle-medium  text-gray-1 flex ${community == null ? "justify-end relative bottom-8 max-sm:bottom-0 max-sm:items-center max-sm:flex-col" : "justify-between mt-2"} mx-6  gap-5`}
+          >
+            {!isComment && community != null && (
+              <h1> From - {community.name} Communnity</h1>
+            )}
+            <div
+              className={`flex gap-2 max-sm:flex-col ${community == null ? "py-3" : "py-0"} `}
+            >
+              <p>{formattedDate}</p>
+              <p>{formattedTime}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </article>
     // </Link>
